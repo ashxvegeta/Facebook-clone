@@ -1,0 +1,1658 @@
+                                                        laravel8
+
+                                               ******make first file in larvel******
+composer globar require laravel/installer-insatall
+go to (welcome.blade.php)=>
+  
+<h1>hello code lover</h1>
+
+go to (web.blade.php)=>define route of the file
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+
+go to url=>http://127.0.0.1:8000
+
+
+output=>hello code lover
+
+interviewQ-can we access blade files outside from view folder?
+ans-Yes you can access blade views file out side the view folder but you need to do some changes
+1. Open Config directory and select view on line 17  change the path e.g resource_path('views'), to resource_path('customviews'),
+2. Make new directory in resources name as "customview" and placed all new blade view files here.
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+                                          ******make first custom file in larvel******
+
+
+1-go to resource=>views=>create a new file-hello.blade.php
+
+go to (hello.blade.php)=>
+
+<h1>hello from new custom file</h1>
+
+
+go to (web.blade.php)=> define route of the file
+
+Route::get('/hello', function () {
+    return view('hello');
+});
+
+
+go to url=>http://127.0.0.1:8000/hello
+
+output=>hello from new custom file
+
+
+                                   
+                                       
+-----------------------------------------------------------------------------------------------------------------------------                       
+      
+
+                                         ******make controller in larvel******
+
+
+1-open cmd write command=>php artisan make:controller userController
+
+2-import the controller in to the web.php file on the top- 
+
+use App\Http\controllers\userController;
+ 
+3- go to userController.php file and define a funtion-
+
+
+function show(){
+        return "hello from controller";
+    }
+
+4-define the route-
+   
+web.php=>
+
+Route::get('/user',[userController:: class,'show']);    
+
+
+-----------------------------------------------------------------------------------------------------------------------------                    
+                                    
+                                     ******pass parameter with url in controller in larvel****** 
+
+
+
+1-go to userController.php file and define a funtion-
+
+function showd($id){
+        return $id;
+    }
+
+
+2-define the route-
+   
+web.php=>
+  
+Route::get('/userd/{id}',[userController:: class,'showd']);     
+
+
+3- go to url pass=>http://127.0.0.1:8000/amit     
+
+output-amit
+
+
+interviewQ-how to make a controoler manuelly?
+ans-
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+                                                     ****** larvel view ****** 
+
+1st method=>
+
+1-create a new file- user.blade.php
+
+go to(user.blade.php)=>
+
+<h1>user blade</h1>
+
+
+go to(web.php)=>define the route-
+
+Route::view("users","user");
+
+
+
+2nd method=>
+
+
+1-create a new file- user.blade.php
+
+go to(user.blade.php)=>
+
+<h1>user blade</h1>
+
+
+go to(web.php)=>define the route-
+
+Route::get('/users', function () {
+    return view('user');
+});
+
+
+
+==>passing data in view-
+
+1-go to(web.php)=>define the route-
+
+
+2-Route::get('/naa/{name}', function ($name) {
+    return view('user',["name"=>$name]);
+});
+
+go to(user.blade.php)=>
+
+<h1>{{$name}}</h1>
+
+
+3- go to url pass=>http://127.0.0.1:8000/ashu
+
+output-ashu
+
+
+
+==>calling view from controller-
+
+
+1-first make a controller-
+
+php artisan make:controller usercontroler
+
+
+
+2-import the controller web.php file-
+
+use App\Http\controllers\userController;
+
+
+3- go to controler file usercontroler.php and make a new function- 
+
+
+function controller(){
+
+        return view("user");
+    }
+
+4- go to user.blade.php
+
+<h1>hello from controller</h1>
+
+
+5-go to(web.php)=>define the route-
+
+Route::get('/ctrl',[userController:: class,'controller']);
+
+
+
+
+==>how to pass dynamic data in it-
+
+
+
+1-web.php-
+
+
+Route::get('/ctrl/{name}',[userController:: class,'controller']);
+
+
+
+2-userController.php-
+
+
+function controller($name){
+
+        return view("user",["name"=>$name]);
+    } 
+
+3-user.blade.php
+
+<h1>hello {{$name}}</h1>
+
+-----------------------------------------------------------------------------------------------------------------------------
+                                                     
+                                                
+                                             
+                                                     ****** larvel component ****** 
+       
+
+
+laravel comonent is a piece of code that we can use again and again.
+
+                                                             ==>this is component name  
+                                                             |
+1-for making component command-php artisan make:component header location-resoucre(html wali) and another one(viewphp) in app and then view
+
+
+2-how to use it-
+
+a)create a new file in view(compo.blade.php) and make a route of it also in web.php.
+            ==>components file name
+            |
+b)add <x-header /> in view file(compo.blade.php).
+
+c)now how to pass data in that-
+
+i-now go to (compo.blade.php) add pass data-
+
+<x-header componentName ="user"/>
+
+
+ii)now go to header.php(php wali not html wali    app/view/componet wali)
+
+
+public $title = "";
+    public function __construct($componentName)
+    {
+        //
+        $this->title = $componentName;
+    }     
+
+iii) now go to header.blade.php(only components wali)-
+
+<div>
+    <h1> {{$title}}'s  header components</h1>
+    <!-- It is quality rather than quantity that matters. - Lucius Annaeus Seneca -->
+</div>  
+
+
+3-how to reuse it-
+
+a)create a new file in view- about.blade.php
+
+b) in  about.blade.php simply write- 
+
+<x-header componentName="about"/>         
+
+interviewQ-can we use the component as a route dirctly rather then include it
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+                                                      
+                                              ****** larvel blade template******   
+
+
+
+
+blade template is a laravel template engine which converts plain text to php text and give output.
+       
+        convert
+{{$var}}====><?php?>
+
+
+1-make a controller-php artisan make:controller user
+
+function fun(){
+
+        return view('view');
+    }
+
+
+
+2- import the controller-web.php-
+
+use App\Http\controllers\userController;
+   
+
+3-define route-
+
+
+Route::get('/blade',[userController:: class,'fun']);
+
+4-url::http://127.0.0.1:8000/blade
+
+
+                                       |_>>> exprisssion-
+
+
+view.php
+
+<h2>{{10+20}}</h2> output=30
+
+
+
+                                         |_>>> passing data- 
+
+userController.php 
+
+function fun(){
+
+        return view('view',["name"=>'ashu']);
+    }  
+
+view.php-
+
+<h1>hello{{$name}}</h1>   
+
+
+                                           |_>>> function count- 
+
+
+userController.php
+
+function fun(){
+
+        return view('view',["name"=>['anil', 'bruce','jatin']]);
+    } 
+
+
+view.php-
+
+<h1>{{count($name)}}</h1>    
+
+
+
+                                               |_>>> if else- 
+
+
+
+
+
+function fun(){
+
+        return view('view',["name"=>'ashu']);
+    }
+
+
+
+view.blade.php-
+
+
+@if($name =='ashu')
+<h1>{{$name}}</h1>
+@elseif($name == 'anil')
+<h1>{{$name}}</h1>
+@else
+<h1>error</h1>
+@endif 
+
+
+
+
+                                                   |_>>> loops-
+
+
+
+userController.php-
+
+function fun(){
+
+        return view('view',["name"=>'ashu']);
+    }
+
+
+
+
+view.blade.php-
+
+
+@for ($i=0;$i<=10;$i++)
+
+<h1>
+    {{$name}}
+</h1>
+@endfor    
+
+
+                                                  |_>>> for each
+
+
+userController.php-
+
+function fun(){
+        $data = ['anil','vanil'];
+        return view('view',["name"=>$data]);
+    }
+
+
+view.blade.php-
+
+@foreach ($name as $user) 
+
+<h1>{{$user}}</h1>
+    
+@endforeach
+
+
+                                                                          ******  include view in view ****** 
+
+
+1-first make a new file and route of it -inner.blade.php
+
+inner.blade.php
+
+<h1>heelo inner</h1>
+
+route-Route::view("inner","inner");
+
+
+2-then make a second new fine and route of it-view.blade.php
+
+view.blade.php
+
+
+<h1>hello view</h1>
+             |=>first file name
+@include('inner')------->@include user for including the 1st file into second file
+
+
+route-Route::view("view","view");
+
+
+
+                                                                            ******  php in js ****** 
+
+
+
+1-first make a controller and include it in web.php file-
+
+a-php artisan make:controller usercontroller-commannd for making controller
+
+usercontroller.php
+
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class usercontroller extends Controller
+{
+    function loadview(){
+        $data = ['anil','vanil','kanil'];
+        return view("view",['users'=>$data]);
+    }
+}
+
+2-then make  route of controller and inclue in web.php file
+
+web.php
+
+use App\Http\controllers\userController;-including the controller in web.php file
+
+Route::get('/user',[usercontroller::class,'loadview']);-route
+
+
+3-now make a another blade file where we will pass the data of controller and use the js-
+
+view.blade.php
+
+
+@foreach($users as $user)
+
+
+
+<h1>{{$user}}</h1>
+
+@endforeach
+
+
+<script>
+    var data = @json($users);
+
+     console.log(data);     or      (console.log(data[0]);)-for single data
+</script>
+
+
+
+1-csrf
+
+view.blade.php
+
+<h2>view page</h2>
+
+@include('inner')
+
+@csrf  (user console log to see and do input type="text" to see the token )
+
+<script>
+    var data = @json($users);
+
+    console.log(data);
+</script>
+
+intervie question-best way to add bottstarp and jquery?
+
+ans-Put your css and js files into the public folder because it is public place for css, js and images etc. We can find path with the help of asset ('your cs or js file name') method.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                           
+
+
+                                                                          ******  laravel html forms  ****** 
+
+
+1-first make a controller and and include the controoler in web.php file-
+
+|=> php artisan make:controller user controller
+
+
+
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class usercontroller extends Controller
+{
+    function getdata(Request $rq){
+      
+        return $rq;
+    }
+}
+
+
+
+2-then make a router of the controller and include in web.php file-
+
+<?php
+use App\Http\Controllers\usercontroller;-including controller
+
+Route::post('/user',[usercontroller::class,'getdata']);
+
+
+3-then make a new blade file for form also the route of it for showing-
+
+
+form.blade.php-
+
+
+<body>
+    <h1>form</h1>
+
+        <br><br>
+    <form action="user" method="POST">
+
+    @csrf
+
+        <input type="text" name="name" id="name" placeholder="enter name">
+        <br><br>
+
+        <input type="password" name="password" id="password" placeholder="Enter password">
+        <br><br>
+        
+        <input type="submit" value="submit">
+
+    </form>
+</body>
+
+
+4-then after pass @csrf token in form and Request parameter to controller function-
+
+
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class usercontroller extends Controller
+{
+    function getdata(Request $rq){
+      
+        return $rq;
+    }
+}
+
+Quentioninterview-why we use the @csrf token-
+ans-Csrf:- cross site request forgery....
+Or ye security purpos ke liye use hota h....or site ko secure bana deta...
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+                                                                                   ******  Laravel middleware ****** 
+
+
+
+Middleware acts as a bridge between a request and a response. It is a type of filtering mechanism.Laravel includes a middleware that verifies whether the user of the application is authenticated or not.
+
+1-firt make 3 file blade file and route of it-
+
+i)|_>user.blade.php
+
+<h1>user page</h1>
+
+ii)|_>check.blade.php
+
+<h1>check page</h1>
+
+iii)|_>noaccess.blade.php
+
+<h1>no access</h1>
+
+
+2-web.php
+
+Route::view("user","user");
+
+
+Route::view("noaccess","noaccess");
+
+
+
+3-then make a middleware and give a condition-
+
+                               |->middleware name
+php artisan make :middleware checkage
+
+
+
+checkage.php
+
+
+public function handle(Request $request, Closure $next)
+    {
+        
+        echo "globle maessage for all";->it will show you on all the pages
+
+        if ($request->age && $request->age < 18) {
+            return redirect('noaccess');
+        }
+
+        return $next($request);
+    }
+}
+
+
+4-then add the middleware in kernel.php file-
+
+ 
+                      |->middleware name
+\App\Http\Middleware\checkage::class,
+
+
+
+5-then pass in url=http://127.0.0.1:8000/?age=10
+
+it will bring you to no access page
+
+
+intervie question-can we add the middle in view?
+ans=yes
+
+It's posiible to add multiple middlewares inside one group route
+
+Route::group(['middleware' =>[ 'protectedPages', 'AnotherOneHERE']], function () {
+        // Add your routes HERE
+        Route::view('users', 'users');
+        Route::view('home', 'home');
+      });
+
+
+
+                                                                               ******  Laravel group middleware ****** 
+
+
+group middleware used for some specific route are called group middleware.
+
+1-1-firt make 3 file blade file and route of it-
+
+i)-user.blade.php
+<h1>this is user page</h1>
+
+ii)-home.blade.php
+<h1>this is home page</h1>
+
+iii)-noaccess.blade.php
+<h1>you can't access the the website</h1>
+
+
+2-then define the route of three file-
+
+web.php
+
+
+Route::view("home","home");
+
+Route::view("user","user");
+
+Route::view("noaccess","noaccess");
+
+
+3-then make a middleware and give condition-
+                               |->middleware name
+php artisan make :middleware agecheck
+
+public function handle(Request $request, Closure $next)
+    {
+        if ($request->age && $request->age < 18) {
+            return redirect('noaccess');
+        }
+        return $next($request);
+    }
+}
+
+
+4-then add the middleware in kernel in group middleware section-
+
+kernel.php-
+
+protected $middlewareGroups = [
+
+   |->you can add any name here
+'protectPage'=>[
+            \App\Http\Middleware\ageCheck::class,
+        ]
+
+    ];
+
+5-then make  a route of the middleware in which file you wanna apply -
+
+web.php-
+
+Route::group(['middleware'=>['protectPage']], function(){
+    Route::view("user","user");
+
+
+Route::get('/', function () { 
+        return view('welcome');---------------->u can also use another route
+    });
+});
+
+6-then go to browser and put-
+
+http://127.0.0.1:8000/user?age=9 it will land u to u cant access file.
+
+
+interviewQ-can we add 2 miidelware in group?
+ans-Yes we can add 2 group middleware
+Route::group(['middleware'=>['Getinitial' ,'Getpartial']])
+
+
+
+
+
+                                                                          ******  Laravel route middleware ****** 
+
+
+1-1-firt make 3 file blade file and route of it-
+
+i)-user.blade.php
+<h1>this is user page</h1>
+
+ii)-home.blade.php
+<h1>this is home page</h1>
+
+iii)-noaccess.blade.php
+<h1>you can't access the the website</h1>
+
+
+2-then define the route of three file-
+
+web.php
+
+
+Route::view("home","home");
+
+Route::view("user","user");
+
+Route::view("noaccess","noaccess");
+
+
+3-then make a middleware and give condition-
+                               |->middleware name
+php artisan make :middleware agecheck
+
+public function handle(Request $request, Closure $next)
+    {
+        if ($request->age && $request->age < 18) {
+            return redirect('noaccess');
+        }
+        return $next($request);
+    }
+}
+
+
+
+4-then add the middleware in kernel in route middleware section-
+
+protected $routeMiddleware = [
+
+'protected' => \App\Http\Middleware\ageChk::class,
+
+];
+
+5-then apply the middleware in which route u wanna apply-
+
+
+
+Route::view("user","user")->middleware('protected');
+
+
+
+6-then go to browser and put-
+
+http://127.0.0.1:8000/user?age=9 it will land u to u cant access file.
+
+intervieQ-can we add two middleware in in one route
+
+
+ans-You can also assign multiple middleware to the route. Like this Route::view('users', 'users')->middleware('first middleware' , 'second middleware');
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+                                                            ******  connection with database ****** 
+
+
+
+1-go to .env file-
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel8 --->change the name if u want to change with same name of datbase in phpmyadmin
+DB_USERNAME=root----->it shout be root
+DB_PASSWORD=   ------>it should be blank but u can but can put password there also
+
+
+2-then make a controoler and include in web.php file-
+
+php artisan make:controller usercontroller;
+
+'
+usercontrolle.php
+{
+    function index(){
+        echo "Welcome database connection is there";
+    }
+}
+
+3-then make a route of controller-
+web.php-
+
+use App\Http\Controllers\usercontroller;
+
+Route::get('/user',[usercontroller::class,'index']);
+
+
+4-now we have to import the database file to controller-
+
+|_>use Illuminate\support\Facades\DB;-->for importing the file
+
+|_> return DB::select("select * from users");-->for getting the data from the databse
+
+
+usercontroller.php-
+
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+use Illuminate\support\Facades\DB;
+
+class usercontroller extends Controller
+{
+    function index(){
+        return DB::select("select * from users");
+    }
+}
+
+
+intervie Q-can we add another database engine into laravel?
+ans-Yes, we can add other database engines also.  Currently four database support 
+1)  MySQL 5.6+
+2)  PostgreSQL 9.4+ 
+3)  SQLite 3.8.8
+4)  SQL Server 2017+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+                                                                         ******  laravel  model with DB connnection ****** 
+
+1-ceate a table in datbase in plural name of model and insert data
+
+2-create a  model with singular name of table-
+
+php artisan make:model employee;
+
+employee.php
+
+class employee extends Model
+{
+    use HasFactory;
+}
+
+
+3-then make a controller  and add model into it-
+
+php artisan make:controller usercontroller
+
+
+usercontroller.php-
+
+
+use App\models\employee;----->for adding model into controller
+
+{
+    function fun(){
+
+        return employee::all();----->for getting all the data from the database;
+    }
+}
+
+
+4-then make router of controoler and add controller into web.php file-
+
+
+use App\Http\Controllers\usercontroller;for adding controller into web.php file
+
+
+route::get('/user', [usercontroller::class,'fun']);
+
+5-and if u want to see another table data go to model file and write-
+
+class employee extends Model
+{
+    use HasFactory;    |->another table name
+    public  $table = "member";
+}
+
+
+intervieQ-can we fetch two table data with one model?
+ans-yes public function index() {    $data = array(        'index_slider'  => IndexSlider::all(),        'index_feature' => IndexFeature::all(),        'footer_boxes'  => FooterBoxes::all(),    );    return View::make('index', $data); }
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+                                                                      ******  laravel  http clint ****** 
+we can use http clint for using api
+
+apilink-https://reqres.in/api/users?page=1
+
+1-first make a controler and add http in that-
+
+
+php artisan make:controller usercontroller
+
+
+usercontroller.php-
+
+
+use Illuminate\support\Facades\Http;-------->for calling api
+
+class usercontroller extends Controller
+{
+    function get(){
+        return Http::get("https://reqres.in/api/users?page=1"); -for get data
+
+         or
+
+    $data = Http::get("https://reqres.in/api/users?page=1");----for sending the data to view file home.blade.php file to see in table form
+        return view("home",['user'=>$data['data']]);
+    }
+        
+    }
+}
+
+
+2-then make a route and add controoler to web.php-
+
+use App\Http\Controllers\usercontroller;
+
+route::get('/user',[usercontroller::class,'get']);
+
+
+3-then make a  view blade.php file to show the api data in table form-
+
+home.blade.php
+
+
+<table border="1" cellspacing="" cellpadding="">
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>email</th>
+        <th>photo</th>
+    
+    </tr>
+
+
+    @foreach($user as $data) 
+
+    <tr>
+        <th>{{$data['id']}}</th>
+        <th>{{$data['first_name']}}</th>
+        <th>{{$data['email']}}</th>
+        <th><img src="{{$data['avatar']}}" alt="" srcset=""></th>
+    
+    </tr>
+
+
+
+
+    @endforeach
+   
+
+</table>
+
+
+
+intervieQ-can we use api in model and web.php file directl?
+
+ans - No, we can't use this http client in model or web.php route file. Controller is the best place to fetch and use and handle these http requests and laravel also provides support in controller.
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+                                                                           ******  laravel  http Request method ****** 
+
+
+HTTP defines a set of request methods to indicate the desired action to be performed for a given resource. Although they can also be nouns, these request methods are sometimes referred to as HTTP verbs. Each of them implements a different semantic, but some common features are shared by a group of them
+
+
+
+GET
+POST
+PUT
+DELETE
+HEAD
+PATCH
+OPTIONS
+
+
+GET
+1-first make a blade file for form-
+
+
+               |->    |->path should be as given to route
+<form action="users" method="GET">
+
+
+
+<input type="text" name="name" id="name" placeholder="enter name"> <br><br>
+
+<input type="password" name="password" id="password" placeholder="enter password"> <br><br>
+
+
+<button>login</button>
+
+
+</form>
+
+2-then define route of it-
+
+
+Route::view("login","user");
+
+
+
+3-then make a controoler-
+
+
+php artisan make:controller usercontroller
+
+
+
+class usercontroller extends Controller
+{
+    function testRequest(Request $rq){
+        
+        return $rq;
+    }
+}
+
+
+4-then add controller to web.php file and make a  route of it-
+
+use App\Http\Controllers\usercontroller;
+              
+               |->path should be as given to form
+Route::get('/users',[usercontroller::class,'testRequest']);
+
+
+
+-POST
+
+1-first make a blade file for form-
+
+
+               |->    |->path should be as given to route
+<form action="users" method="POST">
+
+@csrf
+
+<input type="text" name="name" id="name" placeholder="enter name"> <br><br>
+
+<input type="password" name="password" id="password" placeholder="enter password"> <br><br>
+
+
+<button>login</button>
+
+
+</form>
+
+2-then define route of it-
+
+
+Route::view("login","user");
+
+
+
+3-then make a controoler-
+
+
+php artisan make:controller usercontroller
+
+
+
+class usercontroller extends Controller
+{
+    function testRequest(Request $rq){
+        
+        return $rq;
+    }
+}
+
+
+4-then add controller to web.php file and make a  route of it-
+
+use App\Http\Controllers\usercontroller;
+              
+               |->path should be as given to form
+Route::post('/users',[usercontroller::class,'testRequest']);
+
+
+
+-PUT
+
+1-first make a blade file for form-
+
+
+               |->    |->path should be as given to route
+<form action="users" method="POST">
+
+@csrf
+
+{{method_field('PUT')}} 
+
+<input type="text" name="name" id="name" placeholder="enter name"> <br><br>
+
+<input type="password" name="password" id="password" placeholder="enter password"> <br><br>
+
+
+<button>login</button>
+
+
+</form>
+
+2-then define route of it-
+
+
+Route::view("login","user");
+
+
+
+3-then make a controoler-
+
+
+php artisan make:controller usercontroller
+
+
+
+class usercontroller extends Controller
+{
+    function testRequest(Request $rq){
+        
+        return $rq;
+    }
+}
+
+
+4-then add controller to web.php file and make a  route of it-
+
+use App\Http\Controllers\usercontroller;
+              
+               |->path should be as given to form
+Route::PUT('/users',[usercontroller::class,'testRequest']);
+
+
+
+-DELETE
+
+1-first make a blade file for form-
+
+
+               |->    |->path should be as given to route
+<form action="users" method="POST">
+
+@csrf
+
+{{method_field('DELETE')}} 
+
+<input type="text" name="name" id="name" placeholder="enter name"> <br><br>
+
+<input type="password" name="password" id="password" placeholder="enter password"> <br><br>
+
+
+<button>login</button>
+
+
+</form>
+
+2-then define route of it-
+
+
+Route::view("login","user");
+
+
+
+3-then make a controoler-
+
+
+php artisan make:controller usercontroller
+
+
+
+class usercontroller extends Controller
+{
+    function testRequest(Request $rq){
+        
+        return $rq;
+    }
+}
+
+
+4-then add controller to web.php file and make a  route of it-
+
+use App\Http\Controllers\usercontroller;
+              
+               |->path should be as given to form
+Route::delete('/users',[usercontroller::class,'testRequest']);
+
+
+intervieQ-is there any method which can handle all the request?
+ans-Yes, We can use match() or any() for all Http methods. like Route::match(['get', 'post', 'put', 'delete']
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+                                                                      ******  laravel session  ****** 
+                                                                             
+session is basically uses to store the valible value from one page to multiple page
+
+
+1-first make a blade file and and crete a form in that and route of it-
+
+login.blade.php
+
+
+<h1>login</h1>
+
+<form action="user" method="post">
+
+@csrf
+
+<input type="text" name="name" id="name" placeholder="enter name"> <br><br>
+
+<input type="password" name="password" id="password" placeholder="enter password"> <br><br>
+
+<button type="submit" name="submit">submit</button>
+</form>
+
+
+2- define route-
+
+web.php
+
+Route::view("login","login");
+
+
+3-then make a controller and add the controller into web.php file-
+
+
+
+php artisan make:controller userauth
+
+
+userauth.php
+
+class userauth extends Controller
+{
+    //
+
+    function login(Request $rq) {
+         
+        return $rq->input();
+    }
+
+}
+
+4-define the route of controller and add the controller into web.php file-
+
+web.php
+
+
+use App\Http\controllers\userauth;-----adding controller
+
+
+
+Route::post('/user',[userauth::class,'login']);
+
+5-now store in session-
+
+
+go to controller file-
+
+userauth.php
+
+class userauth extends Controller
+{
+    //
+
+    function login(Request $rq) {
+         
+        $data =  $rq->input('name');
+
+        $rq->session()->put('name',$data);
+
+        echo session('name');
+    }
+
+}
+
+6-now redirect the session onto another file-
+
+
+now create a another blade file and route of it-
+
+profile.blade.php
+
+<h1>profile page</h1>
+                 |->this will store the session onto another page
+<h2>hello {{session('name')}}</h2>
+
+
+web.php-
+
+
+Route::view("profile","profile");
+
+7-then go to controoler and redirect the data into profile page-
+
+userauth.php
+
+{
+    //
+
+    function login(Request $rq) {
+         
+        $data =  $rq->input('name');
+
+        $rq->session()->put('name',$data);
+
+        return redirect('profile');------fo redirecting
+    }
+
+}
+
+8-now we have to make logout-
+
+go to profile file and add a acchor tag and give path and make a route of it-
+
+profile.blade.php
+
+<h1>profile page</h1>
+
+<h2>hello {{session('name')}}</h2>
+
+
+<a href="/logout">logout</a>
+
+
+
+9-now go to web.php and create a route for logout-
+
+web.php-
+
+Route::get('/logout', function () {
+    
+    if (session()->has('name')) {
+         
+        session()->pull('name',null);
+
+    }
+
+    return redirect('login');
+});
+
+
+
+10-after login we dont have to show the login page directly for stopping this we have to make a route for login again and uncomment the previous login route-
+
+web.php
+
+Route::get('/login', function () {
+    
+    if (session()->has('name')) {
+         
+        return redirect('profile');
+
+    }
+
+    return view('login');
+    
+});
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+                                                                 ******  laravel flash session  ****** 
+
+
+flash session can use only once not again and again like normal session
+
+
+1-first make a blade file and crete a form in that and define route of it-
+
+storeblade.php-
+
+
+<form action="storecontroller" method="POST">
+
+@csrf
+<input type="text" name="user" id="user" placeholder="enter name"> <br><br>
+
+
+<input type="password" name="password" id="password" placeholder="enter password"> <br><br>
+
+<input type="email" name="email" id="email" placeholder="enter email"> <br><br>
+
+<button type="submit">add user</button>
+
+
+</form>
+2-define route of storeblade.php file-
+
+web.php-
+
+
+Route::view("store","storeuser");
+
+3-then make a controller and inclue in web.php file and make a route of it-
+
+php artisan make:controller storecontroller
+
+storecontroller.php
+
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class storecontroller extends Controller
+{
+    function storeM(Request $rq){
+      
+        return $rq->input();
+    }
+}
+
+4-web.php-
+
+use App\Http\Controllers\storecontroller;
+
+
+
+Route::post('storecontroller',[storecontroller::class,'storeM']);
+
+
+5-now to store the data into flash session go to  controoler-
+
+storecontroller.php
+
+
+class storecontroller extends Controller
+{
+    
+    function storeM(Request $rq){
+
+        $data = $rq->input('user');
+
+        $rq->session()->flash('user',$data);
+
+        return redirect('store');
+
+    }
+}
+
+6-now go to from page and make a condition-
+
+
+storeuser.blade.php-
+
+
+<body>
+
+<h1>add member</h1>
+
+
+@if(session('user'))
+<h3>data saved for {{session('user')}}</h3>
+@endif
+
+<form action="storecontroller" method="POST">
+
+@csrf
+<input type="text" name="user" id="user" placeholder="enter name"> <br><br>
+
+
+<input type="password" name="password" id="password" placeholder="enter password"> <br><br>
+
+<input type="email" name="email" id="email" placeholder="enter email"> <br><br>
+
+<button type="submit">add user</button>
+
+
+</form>
+    
+</body>
+
+interviewq-can we extend the flash session for one time more?
+ans-
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+                                                                              ******  laravel file upload ****** 
+
+
+
+1-first make a blade file and crete a form in that and define route of it-
+
+upload.blade.php-
+
+h1>upload file</h1>
+
+<form action="upload" method="POST" enctype="multipart/form-data">
+@csrf
+<input type="file" name="file" id="file"> <br><br>
+
+<button type="submit">upload file</button>
+
+
+
+</form>
+
+
+2-define route of upload.blade.php file-
+
+web.php-
+
+Route::view("upload","upload");
+
+
+
+3-then make a controller and add controoler to web.php file and make a route of it-
+
+
+php artisan make:controller uploadcontroller
+
+
+uploadcontroller.php-
+
+
+
+class uploadcontroller extends Controller
+{
+    function index() {
+
+        return "heelo";
+    }
+}
+
+
+4-web.php-
+
+
+use App\Http\Controllers\uploadcontroller;-for adding controoler
+
+
+
+Route::post("upload",[uploadcontroller::class,'index']);
+
+
+
+5-now upload the file go to controoler file-
+
+
+uploadcontroller.php-
+
+
+
+class uploadcontroller extends Controller
+{
+    function index(Request $rq) {
+
+        return $rq->file('file')->store('img');
+    }
+}
+
+
+inreviewQ-how can we cange the dynamic name of oploded file?
+
+ans-By using storeAs() method, like this $path = $req->file->storeAs('images', 'filename.jpg');
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
